@@ -4,5 +4,24 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="action_sign_out">Sign Out</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="logo">_VITALARIUM</string>
+    <string name="login_with">Login With</string>
+
+    <string name="facebook_application_id" translatable="false">1723392461018199</string>
+    <!-- Facebook Application ID, prefixed by 'fb'.  Enables Chrome Custom tabs. -->
+    <string name="facebook_login_protocol_scheme" translatable="false">fb1723392461018199</string>
+
+    <string name="twitter_consumer_key" translatable="false">cSrcnNAoSqJKzfZhDOUaOL1f2</string>
+    <string name="twitter_consumer_secret" translatable="false">NRv4WaGDVEMEmVKm57gwlh2gTNyra9NGH8bSR4iZVBTGT4J0Sa</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="backlog_page_title">Backlog</string>
+    <string name="this_sprint_page_title">This Sprint</string>
+    <string name="next_sprint_page_title">Next Sprint</string>
+
 </resources>

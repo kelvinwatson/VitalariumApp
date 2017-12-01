@@ -1,0 +1,17 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="@color/fui_bgEmail"
+    android:foregroundGravity="center"
+    tools:context="com.watsonlogic.vitalarium.view.DashboardFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:gravity="center"
+        android:id="@+id/dummy_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@android:color/black"
+        android:text="@string/hello_blank_fragment" />
+</FrameLayout>
