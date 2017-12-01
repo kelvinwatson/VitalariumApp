@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "739292378240",
+    "firebase_url": "https://vitalarium-ae815.firebaseio.com",
+    "project_id": "vitalarium-ae815",
+    "storage_bucket": "vitalarium-ae815.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:739292378240:android:98a32deba8680590",
+        "android_client_info": {
+          "package_name": "com.watsonlogic.vitalarium"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "739292378240-quphqnbv8v6bgbmsg3nu6423sq2106iq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.watsonlogic.vitalarium",
+            "certificate_hash": "efcb8bf92b3f072dae793595e4209697e3365775"
+          }
+        },
+        {
+          "client_id": "739292378240-2g8g5kchcfvmd2q9glg88h7b1n0ud8qf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBysMxhtjNh4YRjVIUyo-qTDVRD1-R18dw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "739292378240-2g8g5kchcfvmd2q9glg88h7b1n0ud8qf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
