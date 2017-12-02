@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/fui_bgEmail"
     android:foregroundGravity="center"
+    android:background="@color/colorSlate"
     tools:context="com.watsonlogic.vitalarium.view.DashboardFragment">
 
     <!-- TODO: Update blank fragment layout -->
