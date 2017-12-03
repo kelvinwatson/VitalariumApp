@@ -1,12 +1,11 @@
 package com.watsonlogic.vitalarium.presenter.signin;
 
-import android.content.Intent;
-
 import com.watsonlogic.vitalarium.model.signin.SignInDataActions;
 import com.watsonlogic.vitalarium.model.signin.SignInModel;
+import com.watsonlogic.vitalarium.model.user.User;
 import com.watsonlogic.vitalarium.view.signin.SignInViewActions;
 
-public class SignInPresenter implements SignInActions {
+public class SignInPresenter implements SignInCoordinatorActions {
     private final SignInViewActions view;
     private final SignInDataActions model;
 
@@ -37,8 +36,8 @@ public class SignInPresenter implements SignInActions {
     }
 
     @Override
-    public void onUserSignedIn() {
-        view.startMainActivity();
+    public void onUserSignedIn(User user) {
+        view.startDashboardActivity(user);
     }
 
     @Override

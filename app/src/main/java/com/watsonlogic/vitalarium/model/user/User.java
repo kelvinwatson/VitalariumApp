@@ -1,8 +1,12 @@
 package com.watsonlogic.vitalarium.model.user;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public class User implements Parcelable {
     private String id;
     private String displayName;
     private String email;
@@ -10,7 +14,7 @@ public class User {
     private String providerId;
     private List<String> projects;
 
-    public User(){
+    public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
@@ -76,12 +80,59 @@ public class User {
         return "User {" +
                 "id: " + this.id + ", " +
                 "displayName: " + this.displayName + ", " +
-                "email: " + this.email + "," +
+                "email: " + this.email + ", " +
                 "photoUrl: " + this.photoUrl + ", " +
                 "providerId: " + this.providerId + ", " +
                 "projects: " + this.projects.toString() +
                 "}";
     }
+
+    protected User(Parcel in) {
+        id = in.readString();
+        displayName = in.readString();
+        email = in.readString();
+        photoUrl = in.readString();
+        providerId = in.readString();
+        if (in.readByte() == 0x01) {
+            projects = new ArrayList<String>();
+            in.readList(projects, String.class.getClassLoader());
+        } else {
+            projects = null;
+        }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(displayName);
+        dest.writeString(email);
+        dest.writeString(photoUrl);
+        dest.writeString(providerId);
+        if (projects == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(projects);
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public static class UserBuilder {
         private String id;
@@ -91,37 +142,37 @@ public class User {
         private String providerId;
         private List<String> projects;
 
-        public UserBuilder setId(String id){
+        public UserBuilder setId(String id) {
             this.id = id;
             return this;
         }
 
-        public UserBuilder setDisplayName(String displayName){
+        public UserBuilder setDisplayName(String displayName) {
             this.displayName = displayName;
             return this;
         }
 
-        public UserBuilder setEmail(String email){
+        public UserBuilder setEmail(String email) {
             this.email = email;
             return this;
         }
 
-        public UserBuilder setPhotoUrl(String photoUrl){
+        public UserBuilder setPhotoUrl(String photoUrl) {
             this.photoUrl = photoUrl;
             return this;
         }
 
-        public UserBuilder setProviderId(String providerId){
+        public UserBuilder setProviderId(String providerId) {
             this.providerId = providerId;
             return this;
         }
 
-        public UserBuilder setProjects(List<String> projects){
+        public UserBuilder setProjects(List<String> projects) {
             this.projects = projects;
             return this;
         }
 
-        public User build(){
+        public User build() {
             return new User(id, displayName, email, photoUrl, providerId, projects);
         }
     }

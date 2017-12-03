@@ -1,4 +1,4 @@
-package com.watsonlogic.vitalarium.view;
+package com.watsonlogic.vitalarium.view.dashboard;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -26,43 +25,34 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.watsonlogic.vitalarium.R;
+import com.watsonlogic.vitalarium.model.project.Project;
+import com.watsonlogic.vitalarium.model.user.User;
+import com.watsonlogic.vitalarium.presenter.task.DashboardPresenter;
 import com.watsonlogic.vitalarium.view.signin.SignInActivity;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+import static com.watsonlogic.vitalarium.view.signin.SignInActivity.EXTRA_VITALARIUM_USER;
+
+public class DashboardActivity extends AppCompatActivity
+        implements DashboardViewActions, NavigationView.OnNavigationItemSelectedListener {
+
+    private DashboardPresenter dashboardPresenter;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_dashboard);
 
-        ViewPager viewPager = findViewById(R.id.view_pager);
-        PagerAdapter pagerAdapter = new DashboardPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(pagerAdapter);
+        user = getIntent().getParcelableExtra(EXTRA_VITALARIUM_USER);
 
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(viewPager);
+        dashboardPresenter = new DashboardPresenter(this);
+        dashboardPresenter.getProject(user.getProjects().get(0));
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
-        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+
+        getViews();
     }
 
     @Override
@@ -123,10 +113,15 @@ public class MainActivity extends AppCompatActivity
             .addOnCompleteListener(new OnCompleteListener<Void>() {
                 public void onComplete(@NonNull Task<Void> task) {
                     // user is now signed out
-                    startActivity(new Intent(MainActivity.this, SignInActivity.class));
+                    startActivity(new Intent(DashboardActivity.this, SignInActivity.class));
                     finish();
                 }
             });
+    }
+
+    @Override
+    public void onGetProjectComplete(Project project) {
+        // do something with project
     }
 
     public class DashboardPagerAdapter extends FragmentPagerAdapter {
@@ -163,5 +158,35 @@ public class MainActivity extends AppCompatActivity
                     return null;
             }
         }
+    }
+
+    private void getViews(){
+        ViewPager viewPager = findViewById(R.id.view_pager);
+        PagerAdapter pagerAdapter = new DashboardPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
+
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 }

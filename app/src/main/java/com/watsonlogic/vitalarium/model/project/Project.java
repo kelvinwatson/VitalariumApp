@@ -51,6 +51,16 @@ public class Project {
         this.timezone = timezone;
     }
 
+    @Override
+    public String toString() {
+        return "Project {" +
+                "id: " + this.id + ", " +
+                "sprints: " + this.sprints + ", " +
+                "backlog: " + this.backlog + ", " +
+                "timezone: " + this.timezone + ", " +
+                "}";
+    }
+
     public static class ProjectBuilder{
         private String id;
         private List<String> sprints;

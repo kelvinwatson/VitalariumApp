@@ -1,6 +1,8 @@
 package com.watsonlogic.vitalarium.presenter.signin;
 
-public interface SignInActions {
+import com.watsonlogic.vitalarium.model.user.User;
+
+public interface SignInCoordinatorActions {
     void prepareAndStartFirebaseAuthSignInActivity();
 
     void initializeFirebaseAuthStateChangedListener();
@@ -9,7 +11,7 @@ public interface SignInActions {
 
     void removeOnFirebaseAuthStateChangedListener();
 
-    void onUserSignedIn();
+    void onUserSignedIn(User user);
 
     void onUserSignedOut();
 }

@@ -1,11 +1,13 @@
 package com.watsonlogic.vitalarium.presenter.task;
 
+import com.watsonlogic.vitalarium.model.project.Project;
 import com.watsonlogic.vitalarium.model.task.Task;
 
 import java.util.List;
 
-public interface TaskActions {
-    List<Task> getTasks();
+public interface DashboardCoordinatorActions {
+    void getProject(String projectId);
+    void onGetProjectComplete(Project project);
     void addTask();
     //void deleteTask();
     void updateTask();

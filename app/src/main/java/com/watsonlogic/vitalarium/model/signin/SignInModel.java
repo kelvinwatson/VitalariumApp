@@ -18,7 +18,7 @@ import com.watsonlogic.vitalarium.R;
 import com.watsonlogic.vitalarium.model.project.Project;
 import com.watsonlogic.vitalarium.model.sprint.Sprint;
 import com.watsonlogic.vitalarium.model.user.User;
-import com.watsonlogic.vitalarium.presenter.signin.SignInActions;
+import com.watsonlogic.vitalarium.presenter.signin.SignInCoordinatorActions;
 import com.watsonlogic.vitalarium.presenter.signin.SignInPresenter;
 
 import java.util.Arrays;
@@ -37,14 +37,14 @@ public class SignInModel implements SignInDataActions {
             new AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build());
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private SignInActions presenter;
+    private SignInCoordinatorActions presenter;
     private DatabaseReference dbRef;
 
     public SignInModel() {
         mAuth = FirebaseAuth.getInstance();
     }
 
-    public void addObserver(SignInActions presenter) {
+    public void addObserver(SignInCoordinatorActions presenter) {
         this.presenter = presenter;
     }
 
@@ -126,13 +126,13 @@ public class SignInModel implements SignInDataActions {
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Object o = dataSnapshot.getValue();
-                if (o == null){ // New user, add them to the database
+                User result = dataSnapshot.getValue(User.class);
+                if (result == null){ // New user, add them to the database
                     Log.d(TAG,"User does not exist, add them to the database");
                     initializeFirstTimeUserDatabaseObjects(user);
                 } else { //Existing user
-                    Log.d(TAG,o.toString());
-                    presenter.onUserSignedIn();
+                    Log.d(TAG,result.toString());
+                    presenter.onUserSignedIn(result);
                 }
             }
 
@@ -186,7 +186,7 @@ public class SignInModel implements SignInDataActions {
                                 dbRef.child("users").child(newUser.getId()).setValue(newUser, new DatabaseReference.CompletionListener() {
                                     @Override
                                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                        presenter.onUserSignedIn();
+                                        presenter.onUserSignedIn(newUser);
                                     }
                                 });
                             }

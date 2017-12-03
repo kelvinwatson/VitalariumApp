@@ -8,6 +8,7 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.watsonlogic.vitalarium.model.signin.SignInModel;
+import com.watsonlogic.vitalarium.model.user.User;
 import com.watsonlogic.vitalarium.presenter.signin.SignInPresenter;
 import com.watsonlogic.vitalarium.view.signin.SignInViewActions;
 
@@ -133,9 +134,9 @@ public class SignInPresenterTest {
         final SignInModel model = new MockUp<SignInModel>() {
         }.getMockInstance();
         SignInPresenter signInPresenter = new SignInPresenter(view);
-        signInPresenter.onUserSignedIn();
+        signInPresenter.onUserSignedIn((User) o);
         new Verifications() {{
-            view.startMainActivity();
+            view.startDashboardActivity();
             times = 1;
         }};
     }

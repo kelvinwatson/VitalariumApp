@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.watsonlogic.vitalarium.view.MainActivity">
+    tools:context="com.watsonlogic.vitalarium.view.dashboard.DashboardActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white" />
-    <!--<include layout="@layout/content_main" />-->
+    <!--<include layout="@laycontent_dashboardmain" />-->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

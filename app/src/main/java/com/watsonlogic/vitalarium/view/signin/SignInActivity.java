@@ -6,16 +6,17 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.firebase.ui.auth.AuthUI;
 import com.watsonlogic.vitalarium.R;
+import com.watsonlogic.vitalarium.model.user.User;
 import com.watsonlogic.vitalarium.presenter.signin.SignInPresenter;
-import com.watsonlogic.vitalarium.view.MainActivity;
+import com.watsonlogic.vitalarium.view.dashboard.DashboardActivity;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class SignInActivity extends AppCompatActivity implements SignInViewActions {
     private static final int RC_SIGN_IN = 100;
-    private static final String TAG = "MainActivity";
-    private static final String EXTRA_USER = "USER";
+    private static final String TAG = "DashboardActivity";
+    public static final String EXTRA_VITALARIUM_USER = "VITALARIUM_USER";
     private SignInPresenter presenter;
 
     private static final List<AuthUI.IdpConfig> authProviders = Arrays.asList(
@@ -51,8 +52,9 @@ public class SignInActivity extends AppCompatActivity implements SignInViewActio
     }
 
     @Override
-    public void startMainActivity() {
-        Intent loggedInIntent = new Intent(SignInActivity.this, MainActivity.class);
+    public void startDashboardActivity(User user) {
+        Intent loggedInIntent = new Intent(SignInActivity.this, DashboardActivity.class);
+        loggedInIntent.putExtra(EXTRA_VITALARIUM_USER, user);
         startActivity(loggedInIntent);
         finish();
     }
