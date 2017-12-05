@@ -8,6 +8,9 @@ import com.watsonlogic.vitalarium.view.dashboard.DashboardViewActions;
 
 import java.util.List;
 
+/**
+ * {@link DashboardCoordinatorActions implementation}
+ */
 public class DashboardPresenter implements DashboardCoordinatorActions {
     private final DashboardViewActions view;
     private final DashboardDataActions model;

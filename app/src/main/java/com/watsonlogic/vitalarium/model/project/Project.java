@@ -2,6 +2,9 @@ package com.watsonlogic.vitalarium.model.project;
 
 import java.util.List;
 
+/**
+ * Project data model
+ */
 public class Project {
     private String id;
     private List<String> sprints;

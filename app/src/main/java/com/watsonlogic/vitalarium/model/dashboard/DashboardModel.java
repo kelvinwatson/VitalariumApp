@@ -1,15 +1,12 @@
 package com.watsonlogic.vitalarium.model.dashboard;
 
-import android.util.Log;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.watsonlogic.vitalarium.model.project.Project;
 import com.watsonlogic.vitalarium.presenter.task.DashboardCoordinatorActions;
 
+/**
+ * {@link DashboardDataActions} implementation
+ */
 public class DashboardModel implements DashboardDataActions {
     private DashboardCoordinatorActions presenter;
     private static final String TAG = "DashboardModel";

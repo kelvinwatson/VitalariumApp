@@ -6,6 +6,9 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * User data model
+ */
 public class User implements Parcelable {
     private String id;
     private String displayName;

@@ -3,15 +3,18 @@ package com.watsonlogic.vitalarium.presenter.signin;
 import com.watsonlogic.vitalarium.model.signin.SignInDataActions;
 import com.watsonlogic.vitalarium.model.signin.SignInModel;
 import com.watsonlogic.vitalarium.model.user.User;
-import com.watsonlogic.vitalarium.view.signin.SignInViewActions;
+import com.watsonlogic.vitalarium.view.signin.SignInActivity;
 
+/**
+ * {@link SignInCoordinatorActions implementation}
+ */
 public class SignInPresenter implements SignInCoordinatorActions {
-    private final SignInViewActions view;
+    private final SignInActivity view;
     private final SignInDataActions model;
 
-    public SignInPresenter(SignInViewActions view) {
+    public SignInPresenter(SignInActivity view) {
         this.view = view;
-        this.model = new SignInModel();
+        this.model = new SignInModel(view);
         model.addObserver(this);
     }
 

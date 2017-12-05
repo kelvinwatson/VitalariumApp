@@ -4,6 +4,9 @@ import com.watsonlogic.vitalarium.model.comment.Comment;
 
 import java.util.List;
 
+/**
+ * Task data model
+ */
 public class Task {
     private String id;
     private String title;

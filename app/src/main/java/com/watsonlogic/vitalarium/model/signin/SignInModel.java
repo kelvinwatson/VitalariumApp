@@ -1,10 +1,17 @@
 package com.watsonlogic.vitalarium.model.signin;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -13,18 +20,26 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.watsonlogic.vitalarium.BuildConfig;
 import com.watsonlogic.vitalarium.R;
-import com.watsonlogic.vitalarium.model.project.Project;
-import com.watsonlogic.vitalarium.model.sprint.Sprint;
+import com.watsonlogic.vitalarium.VitalariumConstants;
+import com.watsonlogic.vitalarium.model.network.NetworkRequestSingleton;
 import com.watsonlogic.vitalarium.model.user.User;
 import com.watsonlogic.vitalarium.presenter.signin.SignInCoordinatorActions;
 import com.watsonlogic.vitalarium.presenter.signin.SignInPresenter;
+import com.watsonlogic.vitalarium.view.signin.SignInActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.TimeZone;
 
+/**
+ * {@link SignInDataActions implementation}
+ * Handles data actions for sign in
+ */
 public class SignInModel implements SignInDataActions {
     private static final String TAG = "SignInModel";
     private static final String GOOGLE_TOS_URL = "https://www.google.com/policies/terms/";
@@ -39,8 +54,10 @@ public class SignInModel implements SignInDataActions {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private SignInCoordinatorActions presenter;
     private DatabaseReference dbRef;
+    private SignInActivity view;
 
-    public SignInModel() {
+    public SignInModel(SignInActivity view) {
+        this.view = view;
         mAuth = FirebaseAuth.getInstance();
     }
 
@@ -143,58 +160,142 @@ public class SignInModel implements SignInDataActions {
         });
     }
 
-    private void initializeFirstTimeUserDatabaseObjects(final FirebaseUser user){
-        final DatabaseReference firstSprintRef = dbRef.child("sprints").push();
-        final DatabaseReference secondSprintRef = dbRef.child("sprints").push();
-        final DatabaseReference projectRef = dbRef.child("projects").push();
+    private void initializeFirstTimeUserDatabaseObjects(final FirebaseUser firebaseUser){
+//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//
+//        StrictMode.setThreadPolicy(policy);
+//
+//        JSONObject jsonObjLeft = new JSONObject();
+//        JSONObject jsonObjRight = new JSONObject();
+//        try {
+//            jsonObjRight.put("uid", firebaseUser.getUid());
+//            jsonObjRight.put("displayName", firebaseUser.getDisplayName());
+//            jsonObjRight.put("email", firebaseUser.getEmail());
+//            jsonObjRight.put("photoURL", firebaseUser.getPhotoUrl());
+//            jsonObjLeft.put("user", jsonObjRight.toString());
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        Log.d(TAG, jsonObjLeft.toString());
+//
+//        OkHttpClient client = new OkHttpClient();
+//        String firebaseFunctionUrl = VitalariumConstants.BASE_FIREBASE_FUNCTION_URL + "/initializeUserObjectsInDb";
+//
+//            RequestBody body = RequestBody.create(
+//                    MediaType.parse("application/json; charset=utf-8"), jsonObjLeft.toString());
+//
+//            Log.d(TAG, body.toString());
+//            Request request = new Request.Builder()
+//                    .url(firebaseFunctionUrl)
+//                    .post(body)
+//                    .build();
+//        try {
+//            okhttp3.Response response = client.newCall(request).execute();
+//            Log.d(TAG, response.body().string());
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
-        long now = System.currentTimeMillis();
-        long fourteenDaysInMilliseconds = 1000 * 60 * 60 * 24 * 14;
-        final Sprint firstSprint = new Sprint.SprintBuilder()
-                .setId(firstSprintRef.getKey())
-                .setStartDate(System.currentTimeMillis())
-                .setEndDate(now + fourteenDaysInMilliseconds)
-                .build();
-        final Sprint secondSprint = new Sprint.SprintBuilder()
-                .setId(secondSprintRef.getKey())
-                .setStartDate(now + fourteenDaysInMilliseconds)
-                .setEndDate(now + fourteenDaysInMilliseconds + fourteenDaysInMilliseconds)
-                .build();
-        final Project project = new Project.ProjectBuilder()
-                .setId(projectRef.getKey())
-                .setSprints(Arrays.asList(firstSprintRef.getKey(), secondSprintRef.getKey()))
-                .setTimezone(TimeZone.getDefault().getID())
-                .build();
-        final User newUser = new User.UserBuilder()
-                .setId(user.getUid())
-                .setDisplayName(user.getDisplayName())
-                .setEmail(user.getEmail())
-                .setPhotoUrl(user.getPhotoUrl().toString())
-                .setProviderId(user.getProviders().get(0))
-                .setProjects(Arrays.asList(projectRef.getKey()))
-                .build();
+        //Google Volley
 
-        dbRef.child("sprints").child(firstSprintRef.getKey()).setValue(firstSprint, new DatabaseReference.CompletionListener() {
+        Context context = view.getApplicationContext();
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String firebaseFunctionUrl = VitalariumConstants.BASE_FIREBASE_FUNCTION_URL + "/initializeUserObjectsInDb";
+
+        JSONObject jsonObjLeft = new JSONObject();
+        JSONObject jsonObjRight = new JSONObject();
+        try {
+            jsonObjRight.put("uid", firebaseUser.getUid());
+            jsonObjRight.put("displayName", firebaseUser.getDisplayName());
+            jsonObjRight.put("email", firebaseUser.getEmail());
+            jsonObjRight.put("photoURL", firebaseUser.getPhotoUrl());
+            jsonObjLeft.put("user", jsonObjRight.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, jsonObjLeft.toString());
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, firebaseFunctionUrl,
+                jsonObjLeft, new Response.Listener<JSONObject>(){
+
             @Override
-            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                dbRef.child("sprints").child(secondSprintRef.getKey()).setValue(secondSprint, new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                        dbRef.child("projects").child(projectRef.getKey()).setValue(project, new DatabaseReference.CompletionListener() {
-                            @Override
-                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                dbRef.child("users").child(newUser.getId()).setValue(newUser, new DatabaseReference.CompletionListener() {
-                                    @Override
-                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                        presenter.onUserSignedIn(newUser);
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
+            public void onResponse(JSONObject response) {
+                Log.d(TAG, response.toString());
+                try {
+                    User user = new Gson().fromJson(String.valueOf(response.getJSONObject("user")), User.class);
+                    Log.d(TAG, user.toString());
+                    presenter.onUserSignedIn(user);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+
+        }, new Response.ErrorListener(){
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO Auto-generated method stub
+                Log.d(TAG, error.toString());
             }
         });
+
+        NetworkRequestSingleton.getInstance(context).addToRequestQueue(jsObjRequest);
+
+
+//        final DatabaseReference firstSprintRef = dbRef.child("sprints").push();
+//        final DatabaseReference secondSprintRef = dbRef.child("sprints").push();
+//        final DatabaseReference projectRef = dbRef.child("projects").push();
+//
+//        long now = System.currentTimeMillis();
+//        long fourteenDaysInMilliseconds = 1000 * 60 * 60 * 24 * 14;
+//        final Sprint firstSprint = new Sprint.SprintBuilder()
+//                .setId(firstSprintRef.getKey())
+//                .setStartDate(System.currentTimeMillis())
+//                .setEndDate(now + fourteenDaysInMilliseconds)
+//                .build();
+//        final Sprint secondSprint = new Sprint.SprintBuilder()
+//                .setId(secondSprintRef.getKey())
+//                .setStartDate(now + fourteenDaysInMilliseconds)
+//                .setEndDate(now + fourteenDaysInMilliseconds + fourteenDaysInMilliseconds)
+//                .build();
+//        final Project project = new Project.ProjectBuilder()
+//                .setId(projectRef.getKey())
+//                .setSprints(Arrays.asList(firstSprintRef.getKey(), secondSprintRef.getKey()))
+//                .setTimezone(TimeZone.getDefault().getID())
+//                .build();
+//        final User newUser = new User.UserBuilder()
+//                .setId(user.getUid())
+//                .setDisplayName(user.getDisplayName())
+//                .setEmail(user.getEmail())
+//                .setPhotoUrl(user.getPhotoUrl().toString())
+//                .setProviderId(user.getProviders().get(0))
+//                .setProjects(Arrays.asList(projectRef.getKey()))
+//                .build();
+//
+//        dbRef.child("sprints").child(firstSprintRef.getKey()).setValue(firstSprint, new DatabaseReference.CompletionListener() {
+//            @Override
+//            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+//                dbRef.child("sprints").child(secondSprintRef.getKey()).setValue(secondSprint, new DatabaseReference.CompletionListener() {
+//                    @Override
+//                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+//                        dbRef.child("projects").child(projectRef.getKey()).setValue(project, new DatabaseReference.CompletionListener() {
+//                            @Override
+//                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+//                                dbRef.child("users").child(newUser.getId()).setValue(newUser, new DatabaseReference.CompletionListener() {
+//                                    @Override
+//                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+//                                        presenter.onUserSignedIn(newUser);
+//                                    }
+//                                });
+//                            }
+//                        });
+//                    }
+//                });
+//            }
+//        });
     }
 }
 

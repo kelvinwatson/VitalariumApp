@@ -1,5 +1,8 @@
 package com.watsonlogic.vitalarium.model.sprint;
 
+/**
+ * Sprint data model
+ */
 public class Sprint {
     private String id;
     private long startDate;

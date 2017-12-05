@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.watsonlogic.vitalarium.model.signin.SignInModel;
 import com.watsonlogic.vitalarium.model.user.User;
 import com.watsonlogic.vitalarium.presenter.signin.SignInPresenter;
+import com.watsonlogic.vitalarium.view.signin.SignInActivity;
 import com.watsonlogic.vitalarium.view.signin.SignInViewActions;
 
 import org.junit.Before;
@@ -34,7 +35,7 @@ public class SignInPresenterTest {
     SignInPresenter signInPresenter; // UUT
 
     @Injectable
-    SignInViewActions view;
+    SignInActivity view;
     @Injectable
     SignInModel model;
     @Mocked
@@ -73,7 +74,7 @@ public class SignInPresenterTest {
             }
         }.getMockInstance();
 
-        view = mock(SignInViewActions.class);
+        view = mock(SignInActivity.class);
         signInPresenter = new SignInPresenter(view);
     }
 
@@ -82,7 +83,7 @@ public class SignInPresenterTest {
     public void testPrepareAndStartFirebaseAuthSignInActivity() throws Exception {
         final Intent intent = new MockUp<Intent>() {
         }.getMockInstance();
-        final SignInViewActions view = mock(SignInViewActions.class);
+        final SignInActivity view = mock(SignInActivity.class);
         final SignInPresenter signInPresenter = new SignInPresenter(view);
         signInPresenter.prepareAndStartFirebaseAuthSignInActivity();
         new Verifications() {{
@@ -97,7 +98,7 @@ public class SignInPresenterTest {
     public void testInitializeFirebaseAuthStateChangedListener() {
         new MockUp<Intent>() {
         };
-        final SignInViewActions view = new MockUp<SignInViewActions>() {
+        final SignInActivity view = new MockUp<SignInActivity>() {
         }.getMockInstance();
         final SignInModel model = new MockUp<SignInModel>() {
         }.getMockInstance();
@@ -129,21 +130,22 @@ public class SignInPresenterTest {
 
     @Test
     public void testOnUserSignedIn() {
-        final SignInViewActions view = new MockUp<SignInViewActions>() {
+        final SignInActivity view = new MockUp<SignInActivity>() {
         }.getMockInstance();
         final SignInModel model = new MockUp<SignInModel>() {
         }.getMockInstance();
         SignInPresenter signInPresenter = new SignInPresenter(view);
-        signInPresenter.onUserSignedIn((User) o);
+        final User user = mock(User.class);
+        signInPresenter.onUserSignedIn(user);
         new Verifications() {{
-            view.startDashboardActivity();
+            view.startDashboardActivity(user);
             times = 1;
         }};
     }
 
     @Test
     public void testOnUserSignedOut() {
-        final SignInViewActions view = new MockUp<SignInViewActions>() {
+        final SignInActivity view = new MockUp<SignInActivity>() {
         }.getMockInstance();
         final SignInModel model = new MockUp<SignInModel>() {
         }.getMockInstance();
