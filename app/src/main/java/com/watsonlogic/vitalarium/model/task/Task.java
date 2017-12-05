@@ -1,13 +1,17 @@
 package com.watsonlogic.vitalarium.model.task;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.watsonlogic.vitalarium.model.comment.Comment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Task data model
  */
-public class Task {
+public class Task implements Parcelable {
     private String id;
     private String title;
     private String description;
@@ -147,6 +151,67 @@ public class Task {
     public void setCreatedByCreatedOnIndex(String createdByCreatedOnIndex) {
         this.createdByCreatedOnIndex = createdByCreatedOnIndex;
     }
+
+    protected Task(Parcel in) {
+        id = in.readString();
+        title = in.readString();
+        description = in.readString();
+        size = in.readString();
+        sprint = in.readString();
+        project = in.readString();
+        dueDate = in.readLong();
+        if (in.readByte() == 0x01) {
+            comments = new ArrayList<>();
+            in.readList(comments, Comment.class.getClassLoader());
+        } else {
+            comments = null;
+        }
+        createdOn = in.readLong();
+        createdBy = in.readString();
+        updatedOn = in.readLong();
+        updatedBy = in.readString();
+        createdByCreatedOnIndex = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeString(size);
+        dest.writeString(sprint);
+        dest.writeString(project);
+        dest.writeLong(dueDate);
+        if (comments == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(comments);
+        }
+        dest.writeLong(createdOn);
+        dest.writeString(createdBy);
+        dest.writeLong(updatedOn);
+        dest.writeString(updatedBy);
+        dest.writeString(createdByCreatedOnIndex);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Task> CREATOR = new Parcelable.Creator<Task>() {
+        @Override
+        public Task createFromParcel(Parcel in) {
+            return new Task(in);
+        }
+
+        @Override
+        public Task[] newArray(int size) {
+            return new Task[size];
+        }
+    };
 
     public static class TaskBuilder {
         private String id;

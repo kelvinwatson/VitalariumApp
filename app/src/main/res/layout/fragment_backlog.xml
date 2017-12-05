@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:foregroundGravity="center"
     android:background="@color/colorSlate"
-    tools:context="com.watsonlogic.vitalarium.view.dashboard.DashboardBaseFragment">
+    tools:context="com.watsonlogic.vitalarium.view.dashboard.BacklogFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
@@ -13,5 +13,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textColor="@android:color/black"
-        android:text="@string/hello_blank_fragment" />
+        android:text="backlog fragment" />
 </FrameLayout>

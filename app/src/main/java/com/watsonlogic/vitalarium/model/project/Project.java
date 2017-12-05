@@ -1,5 +1,9 @@
 package com.watsonlogic.vitalarium.model.project;
 
+import com.watsonlogic.vitalarium.model.sprint.Sprint;
+import com.watsonlogic.vitalarium.model.task.Task;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,9 +11,10 @@ import java.util.List;
  */
 public class Project {
     private String id;
-    private List<String> sprints;
-    private List<String> backlog;
+    private List<Sprint> sprints;
+    private ArrayList<Task> backlog;
     private String timezone;
+    private Boolean success;
 
     public Project(){
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -23,19 +28,19 @@ public class Project {
         this.id = id;
     }
 
-    public List<String> getSprints() {
+    public List<Sprint> getSprints() {
         return sprints;
     }
 
-    public void setSprints(List<String> sprints) {
+    public void setSprints(List<Sprint> sprints) {
         this.sprints = sprints;
     }
 
-    public List<String> getBacklog() {
+    public ArrayList<Task> getBacklog() {
         return backlog;
     }
 
-    public void setBacklog(List<String> backlog) {
+    public void setBacklog(ArrayList<Task> backlog) {
         this.backlog = backlog;
     }
 
@@ -47,7 +52,7 @@ public class Project {
         this.timezone = timezone;
     }
 
-    public Project(String id, List<String> sprints, List<String> backlog, String timezone){
+    public Project(String id, List<Sprint> sprints, ArrayList<Task> backlog, String timezone){
         this.id = id;
         this.sprints = sprints;
         this.backlog = backlog;
@@ -58,7 +63,7 @@ public class Project {
     public String toString() {
         return "Project {" +
                 "id: " + this.id + ", " +
-                "sprints: " + this.sprints + ", " +
+                "sprints: " + this.sprints.toString() + ", " +
                 "backlog: " + this.backlog + ", " +
                 "timezone: " + this.timezone + ", " +
                 "}";
@@ -66,8 +71,8 @@ public class Project {
 
     public static class ProjectBuilder{
         private String id;
-        private List<String> sprints;
-        private List<String> backlog;
+        private List<Sprint> sprints;
+        private ArrayList<Task> backlog;
         private String timezone;
 
         public ProjectBuilder setId(String id){
@@ -75,12 +80,12 @@ public class Project {
             return this;
         }
 
-        public ProjectBuilder setSprints(List<String> sprints){
+        public ProjectBuilder setSprints(List<Sprint> sprints){
             this.sprints = sprints;
             return this;
         }
 
-        public ProjectBuilder setBacklog(List<String> backlog){
+        public ProjectBuilder setBacklog(ArrayList<Task> backlog){
             this.backlog = backlog;
             return this;
         }

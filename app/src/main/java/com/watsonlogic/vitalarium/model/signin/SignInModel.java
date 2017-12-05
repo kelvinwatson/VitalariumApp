@@ -161,44 +161,7 @@ public class SignInModel implements SignInDataActions {
     }
 
     private void initializeFirstTimeUserDatabaseObjects(final FirebaseUser firebaseUser){
-//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-//
-//        StrictMode.setThreadPolicy(policy);
-//
-//        JSONObject jsonObjLeft = new JSONObject();
-//        JSONObject jsonObjRight = new JSONObject();
-//        try {
-//            jsonObjRight.put("uid", firebaseUser.getUid());
-//            jsonObjRight.put("displayName", firebaseUser.getDisplayName());
-//            jsonObjRight.put("email", firebaseUser.getEmail());
-//            jsonObjRight.put("photoURL", firebaseUser.getPhotoUrl());
-//            jsonObjLeft.put("user", jsonObjRight.toString());
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        Log.d(TAG, jsonObjLeft.toString());
-//
-//        OkHttpClient client = new OkHttpClient();
-//        String firebaseFunctionUrl = VitalariumConstants.BASE_FIREBASE_FUNCTION_URL + "/initializeUserObjectsInDb";
-//
-//            RequestBody body = RequestBody.create(
-//                    MediaType.parse("application/json; charset=utf-8"), jsonObjLeft.toString());
-//
-//            Log.d(TAG, body.toString());
-//            Request request = new Request.Builder()
-//                    .url(firebaseFunctionUrl)
-//                    .post(body)
-//                    .build();
-//        try {
-//            okhttp3.Response response = client.newCall(request).execute();
-//            Log.d(TAG, response.body().string());
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
         //Google Volley
-
         Context context = view.getApplicationContext();
         RequestQueue queue = Volley.newRequestQueue(context);
         String firebaseFunctionUrl = VitalariumConstants.BASE_FIREBASE_FUNCTION_URL + "/initializeUserObjectsInDb";
@@ -232,7 +195,6 @@ public class SignInModel implements SignInDataActions {
 
             }
 
-
         }, new Response.ErrorListener(){
 
             @Override
@@ -244,6 +206,10 @@ public class SignInModel implements SignInDataActions {
 
         NetworkRequestSingleton.getInstance(context).addToRequestQueue(jsObjRequest);
 
+        /**
+         * Request/response be handled above via Google Volley through Firebase functions as above,
+         * rather than calling Firebase from the UI thread as below
+         */
 
 //        final DatabaseReference firstSprintRef = dbRef.child("sprints").push();
 //        final DatabaseReference secondSprintRef = dbRef.child("sprints").push();

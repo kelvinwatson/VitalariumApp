@@ -1,6 +1,8 @@
 package com.watsonlogic.vitalarium.model.network;
 
 import android.content.Context;
+import android.net.NetworkRequest;
+import android.support.annotation.VisibleForTesting;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;

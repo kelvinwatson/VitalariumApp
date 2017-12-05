@@ -1,6 +1,6 @@
 package com.watsonlogic.vitalarium.model.dashboard;
 
-import com.watsonlogic.vitalarium.presenter.task.DashboardCoordinatorActions;
+import com.watsonlogic.vitalarium.presenter.dashboard.DashboardCoordinatorActions;
 
 /**
  * Actions for the main dashboard

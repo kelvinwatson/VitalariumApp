@@ -10,6 +10,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -17,6 +18,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,16 +29,21 @@ import com.google.android.gms.tasks.Task;
 import com.watsonlogic.vitalarium.R;
 import com.watsonlogic.vitalarium.model.project.Project;
 import com.watsonlogic.vitalarium.model.user.User;
-import com.watsonlogic.vitalarium.presenter.task.DashboardPresenter;
+import com.watsonlogic.vitalarium.presenter.dashboard.DashboardPresenter;
 import com.watsonlogic.vitalarium.view.signin.SignInActivity;
 
 import static com.watsonlogic.vitalarium.view.signin.SignInActivity.EXTRA_VITALARIUM_USER;
 
 public class DashboardActivity extends AppCompatActivity
         implements DashboardViewActions, NavigationView.OnNavigationItemSelectedListener {
+    private static final String TAG = "DashboardActivity";
+
+    private PagerAdapter pagerAdapter;
+    private ViewPager viewPager;
 
     private DashboardPresenter dashboardPresenter;
     private User user;
+    private Project project;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +51,10 @@ public class DashboardActivity extends AppCompatActivity
         setContentView(R.layout.activity_dashboard);
 
         user = getIntent().getParcelableExtra(EXTRA_VITALARIUM_USER);
+        Log.d(TAG, user.toString());
 
         dashboardPresenter = new DashboardPresenter(this);
         dashboardPresenter.getProject(user.getProjects().get(0));
-
-
-
-
 
         getViews();
     }
@@ -121,22 +125,58 @@ public class DashboardActivity extends AppCompatActivity
 
     @Override
     public void onGetProjectComplete(Project project) {
-        // do something with project
+        Log.d(TAG, project.toString());
+        // store project variables
+        this.project = project;
+        pagerAdapter.notifyDataSetChanged();
     }
 
-    public class DashboardPagerAdapter extends FragmentPagerAdapter {
-        private static final String ARG_OBJECT = "ARG_OBJ";
-
+    public class DashboardPagerAdapter extends FragmentStatePagerAdapter {
+        public static final String EXTRA_PROJECT = "PROJECT";
         public DashboardPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
+        public int getItemPosition(Object object) { //caled when notifyDataSetChanged called
+            return PagerAdapter.POSITION_NONE;
+        }
+
+        @Override
         public Fragment getItem(int position) {
-            Fragment fragment = new DashboardFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_OBJECT, position + 1);
-            fragment.setArguments(args);
+            Fragment fragment;
+            switch(position){
+                case 0:
+                    if (project != null) {
+                        Log.d(TAG, "backlog project not null");
+                        fragment = BacklogFragment.newInstance(project.getBacklog());
+                    }
+                    else {
+                        Log.d(TAG, "backlog project is null");
+                        fragment = BacklogFragment.newInstance(null);
+                    }
+                    break;
+                case 1: //current sprint
+                    if (project != null){
+                        Log.d(TAG, "current sprint not null");
+                        fragment = SprintFragment.newInstance(project.getSprints().get(0));
+                    }
+                    else {
+                        Log.d(TAG, "current sprint is null");
+                        fragment = SprintFragment.newInstance(null);
+                    }
+                    break;
+                default: //next sprint
+                    if (project != null) {
+                        Log.d(TAG, "next sprint not null");
+                        fragment = SprintFragment.newInstance(project.getSprints().get(1));
+                    }
+                    else {
+                        Log.d(TAG, "next sprint is null");
+                        fragment = SprintFragment.newInstance(null);
+                    }
+                    break;
+            }
             return fragment;
         }
 
@@ -161,8 +201,8 @@ public class DashboardActivity extends AppCompatActivity
     }
 
     private void getViews(){
-        ViewPager viewPager = findViewById(R.id.view_pager);
-        PagerAdapter pagerAdapter = new DashboardPagerAdapter(getSupportFragmentManager());
+        viewPager = findViewById(R.id.view_pager);
+        pagerAdapter = new DashboardPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);

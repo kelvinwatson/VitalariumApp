@@ -27,9 +27,6 @@ import mockit.Verifications;
 
 import static org.mockito.Mockito.mock;
 
-/**
- * SignInPresenterTest
- */
 public class SignInPresenterTest {
     @Tested
     SignInPresenter signInPresenter; // UUT

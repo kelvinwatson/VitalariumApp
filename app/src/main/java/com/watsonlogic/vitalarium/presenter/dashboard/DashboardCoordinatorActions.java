@@ -1,9 +1,6 @@
-package com.watsonlogic.vitalarium.presenter.task;
+package com.watsonlogic.vitalarium.presenter.dashboard;
 
 import com.watsonlogic.vitalarium.model.project.Project;
-import com.watsonlogic.vitalarium.model.task.Task;
-
-import java.util.List;
 
 public interface DashboardCoordinatorActions {
     void getProject(String projectId);
