@@ -3,7 +3,8 @@
     <color name="colorPrimary">#249C21</color>
     <color name="colorPrimaryDark">#087F05</color>
     <color name="colorAccent">#B2FF59</color>
-    <color name="colorTertiary">#9CCC65</color>
+    <color name="colorTertiary">#2962FF</color>
     <color name="colorRipple">#B7D880</color>
     <color name="colorSlate">#E0E0E0</color>
+    <color name="colorPastel">#37474F</color>
 </resources>

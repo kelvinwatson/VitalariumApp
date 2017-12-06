@@ -69,7 +69,7 @@ public class SignInModel implements SignInDataActions {
     public Intent createFirebaseAuthIntent() {
         return AuthUI.getInstance().createSignInIntentBuilder()
                 .setTheme(R.style.LoginTheme)
-                .setLogo(AuthUI.NO_LOGO)
+                .setLogo(R.drawable.logo)
                 .setAvailableProviders(authProviders)
                 .setTosUrl(GOOGLE_TOS_URL)
                 .setPrivacyPolicyUrl(GOOGLE_PRIVACY_POLICY_URL)
@@ -135,7 +135,7 @@ public class SignInModel implements SignInDataActions {
     }
 
     public void writeUserToDatabaseIfNotExists(@NonNull final FirebaseUser user) {
-        if (dbRef == null){
+        if (dbRef == null) {
             dbRef = FirebaseDatabase.getInstance().getReference();
         }
 
@@ -144,11 +144,11 @@ public class SignInModel implements SignInDataActions {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User result = dataSnapshot.getValue(User.class);
-                if (result == null){ // New user, add them to the database
-                    Log.d(TAG,"User does not exist, add them to the database");
+                if (result == null) { // New user, add them to the database
+                    Log.d(TAG, "User does not exist, add them to the database");
                     initializeFirstTimeUserDatabaseObjects(user);
                 } else { //Existing user
-                    Log.d(TAG,result.toString());
+                    Log.d(TAG, result.toString());
                     presenter.onUserSignedIn(result);
                 }
             }
@@ -160,7 +160,7 @@ public class SignInModel implements SignInDataActions {
         });
     }
 
-    private void initializeFirstTimeUserDatabaseObjects(final FirebaseUser firebaseUser){
+    private void initializeFirstTimeUserDatabaseObjects(final FirebaseUser firebaseUser) {
         //Google Volley
         Context context = view.getApplicationContext();
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -180,7 +180,7 @@ public class SignInModel implements SignInDataActions {
         Log.d(TAG, jsonObjLeft.toString());
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, firebaseFunctionUrl,
-                jsonObjLeft, new Response.Listener<JSONObject>(){
+                jsonObjLeft, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
@@ -195,7 +195,7 @@ public class SignInModel implements SignInDataActions {
 
             }
 
-        }, new Response.ErrorListener(){
+        }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
