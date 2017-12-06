@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -227,6 +228,11 @@ public class DashboardActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
+        View v = navigationView.getHeaderView(0);
+        TextView displayNameTextView = (TextView ) v.findViewById(R.id.nav_header_dashboard_display_name);
+        displayNameTextView.setText(user.getDisplayName());
+        TextView emailTextView = v.findViewById(R.id.nav_header_dashboard_email);
+        emailTextView.setText(user.getEmail());
         navigationView.setNavigationItemSelectedListener(this);
     }
 }

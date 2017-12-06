@@ -74,7 +74,7 @@ public class SignInModel implements SignInDataActions {
                 .setTosUrl(GOOGLE_TOS_URL)
                 .setPrivacyPolicyUrl(GOOGLE_PRIVACY_POLICY_URL)
 //                .setIsSmartLockEnabled(!BuildConfig.DEBUG)
-                .setIsSmartLockEnabled(!BuildConfig.DEBUG)
+                .setIsSmartLockEnabled(false)
                 .build();
     }
 
