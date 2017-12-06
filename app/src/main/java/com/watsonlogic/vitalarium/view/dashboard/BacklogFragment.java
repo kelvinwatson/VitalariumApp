@@ -54,13 +54,6 @@ public class BacklogFragment extends DashboardBaseFragment implements DashboardV
     @Override
     public void onViewCreated(View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
-        swipeRefresh = v.findViewById(R.id.swipe_refresh);
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                presenter.getProject(projectId);
-            }
-        });
         LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext());
         backlogTaskAdapter = new TaskAdapter(tasks);
         recycler = v.findViewById(R.id.backlog_task_recycler);
@@ -68,7 +61,13 @@ public class BacklogFragment extends DashboardBaseFragment implements DashboardV
         recycler.setLayoutManager(layoutManager);
         recycler.setAdapter(backlogTaskAdapter);
         recycler.addItemDecoration(new DividerItemDecoration(v.getContext(), layoutManager.getOrientation()));
-
+        swipeRefresh = v.findViewById(R.id.swipe_refresh);
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.getProject(projectId);
+            }
+        });
     }
 
     public static DashboardBaseFragment newInstance(ArrayList<Task> backlogTasks, String projectId) {
