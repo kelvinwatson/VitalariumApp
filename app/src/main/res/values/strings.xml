@@ -11,7 +11,11 @@
     <string name="action_update">Update</string>
     <string name="title_activity_main">MainActivity</string>
 
-    <string name="input_task_title">Give your task a name</string>
+    <string name="task_title_hint">Give your task a name</string>
+    <string name="task_description_hint">Describe your task (acceptance criteria)</string>
+    <string name="task_size_spinner_label">Size</string>
+    <string name="task_sprint_spinner_label">Sprint</string>
+    <string name="task_status_spinner_label">Status</string>
 
     <string name="logo">_VITALARIUM</string>
     <string name="login_with">Login With</string>

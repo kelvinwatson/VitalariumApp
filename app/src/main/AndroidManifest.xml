@@ -14,7 +14,7 @@
         <activity
             android:name=".view.dashboard.DashboardActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".view.signin.SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.taskdetail.TaskDetailActivity"></activity>
+        <activity android:name=".view.taskdetail.TaskDetailActivity"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
