@@ -150,11 +150,11 @@ public class DashboardActivity extends AppCompatActivity
                 case 0:
                     if (project != null) {
                         Log.d(TAG, "backlog project not null");
-                        fragment = BacklogFragment.newInstance(project.getBacklog());
+                        fragment = BacklogFragment.newInstance(project.getBacklog(), project.getId());
                     }
                     else {
                         Log.d(TAG, "backlog project is null");
-                        fragment = BacklogFragment.newInstance(null);
+                        fragment = BacklogFragment.newInstance(null, null);
                     }
                     break;
                 case 1: //current sprint

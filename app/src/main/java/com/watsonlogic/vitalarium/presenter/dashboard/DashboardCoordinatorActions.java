@@ -9,4 +9,6 @@ public interface DashboardCoordinatorActions {
     //void deleteTask();
     void updateTask();
     void moveTask();
+    void onRefreshProject();
 }
+

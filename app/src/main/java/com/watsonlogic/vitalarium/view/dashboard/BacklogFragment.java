@@ -12,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.watsonlogic.vitalarium.R;
+import com.watsonlogic.vitalarium.model.project.Project;
 import com.watsonlogic.vitalarium.model.task.Task;
+import com.watsonlogic.vitalarium.presenter.dashboard.DashboardPresenter;
 import com.watsonlogic.vitalarium.view.adapter.TaskAdapter;
 
 import java.util.ArrayList;
@@ -21,22 +23,24 @@ import java.util.List;
 /**
  * Displays a list of tasks and can serve as the backlog or a sprint
  */
-public class BacklogFragment extends DashboardBaseFragment {
+public class BacklogFragment extends DashboardBaseFragment implements DashboardViewActions {
+    private DashboardPresenter presenter;
     private static final String TAG = "BacklogFragment";
+    public static final String EXTRA_PROJECT_ID = "PROJECT_ID";
     public static final String EXTRA_BACKLOG_TASKS = "BACKLOG_TASKS";
     private SwipeRefreshLayout swipeRefresh;
     private RecyclerView recycler;
     private RecyclerView.Adapter backlogTaskAdapter;
     private List<Task> tasks;
+    private String projectId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        presenter = new DashboardPresenter((DashboardActivity)getActivity());
         Bundle b = getArguments();
         if (b != null) {
             tasks = b.getParcelableArrayList(EXTRA_BACKLOG_TASKS);
-            if (tasks != null) {
-                Log.d(TAG, "got tasks");
-            }
+            projectId = b.getString(EXTRA_PROJECT_ID);
         }
         super.onCreate(savedInstanceState);
     }
@@ -51,6 +55,12 @@ public class BacklogFragment extends DashboardBaseFragment {
     public void onViewCreated(View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
         swipeRefresh = v.findViewById(R.id.swipe_refresh);
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.getProject(projectId);
+            }
+        });
         LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext());
         backlogTaskAdapter = new TaskAdapter(tasks);
         recycler = v.findViewById(R.id.backlog_task_recycler);
@@ -61,11 +71,17 @@ public class BacklogFragment extends DashboardBaseFragment {
 
     }
 
-    public static DashboardBaseFragment newInstance(ArrayList<Task> backlogTasks) {
+    public static DashboardBaseFragment newInstance(ArrayList<Task> backlogTasks, String projectId) {
         BacklogFragment fragment = new BacklogFragment();
         Bundle args = new Bundle();
+        args.putString(EXTRA_PROJECT_ID, projectId);
         args.putParcelableArrayList(EXTRA_BACKLOG_TASKS, backlogTasks);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onGetProjectComplete(Project project) {
+
     }
 }

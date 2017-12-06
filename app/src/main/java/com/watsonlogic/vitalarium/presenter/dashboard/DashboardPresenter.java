@@ -44,4 +44,9 @@ public class DashboardPresenter implements DashboardCoordinatorActions {
     public void moveTask() {
 
     }
+
+    @Override
+    public void onRefreshProject(){
+
+    }
 }
