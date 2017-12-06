@@ -1,0 +1,19 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.watsonlogic.vitalarium.view.taskdetail.TaskDetailFragment">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_task_title_textinputlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/input_task_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/input_task_title" />
+
+    </android.support.design.widget.TextInputLayout>
+</FrameLayout>

@@ -11,6 +11,8 @@
     <string name="action_update">Update</string>
     <string name="title_activity_main">MainActivity</string>
 
+    <string name="input_task_title">Give your task a name</string>
+
     <string name="logo">_VITALARIUM</string>
     <string name="login_with">Login With</string>
 

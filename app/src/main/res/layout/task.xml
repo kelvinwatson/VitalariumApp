@@ -50,7 +50,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:background="?selectableItemBackgroundBorderless"
-            android:onClick="@{(view)->dashboardPresenter.onClickTaskMoreOptions(task)}"
+            android:onClick="@{(view)->dashboardPresenter.onClickTaskMoreOptions(task, view)}"
             android:tint="@android:color/darker_gray"
             app:srcCompat="@drawable/ic_more_vert_black_24dp" />
     </RelativeLayout>

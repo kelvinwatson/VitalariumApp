@@ -1,5 +1,6 @@
 package com.watsonlogic.vitalarium.view.dashboard;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,7 +10,6 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
@@ -33,12 +33,16 @@ import com.watsonlogic.vitalarium.model.project.Project;
 import com.watsonlogic.vitalarium.model.user.User;
 import com.watsonlogic.vitalarium.presenter.dashboard.DashboardPresenter;
 import com.watsonlogic.vitalarium.view.signin.SignInActivity;
+import com.watsonlogic.vitalarium.view.taskdetail.TaskDetailActivity;
 
 import static com.watsonlogic.vitalarium.view.signin.SignInActivity.EXTRA_VITALARIUM_USER;
 
 public class DashboardActivity extends AppCompatActivity
         implements DashboardViewActions, NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "DashboardActivity";
+    public static final String EXTRA_TASK = "TASK";
+    private static final int RC_UPDATE = 91;
+    private static final int RC_DELETE = 92;
 
     private PagerAdapter pagerAdapter;
     private ViewPager viewPager;
@@ -135,6 +139,23 @@ public class DashboardActivity extends AppCompatActivity
         // store project variables
         this.project = project;
         pagerAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClickUpdateTask(com.watsonlogic.vitalarium.model.task.Task task) {
+        Intent intent = new Intent(this, TaskDetailActivity.class);
+        intent.putExtra(EXTRA_TASK, task);
+        startActivityForResult(intent, RC_UPDATE);
+    }
+
+    @Override
+    public void onClickDeleteUpdateTask(com.watsonlogic.vitalarium.model.task.Task task) {
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public class DashboardPagerAdapter extends FragmentStatePagerAdapter {

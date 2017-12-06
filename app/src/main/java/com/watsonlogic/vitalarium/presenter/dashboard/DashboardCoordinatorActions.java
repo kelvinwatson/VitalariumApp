@@ -1,5 +1,7 @@
 package com.watsonlogic.vitalarium.presenter.dashboard;
 
+import android.view.View;
+
 import com.watsonlogic.vitalarium.model.project.Project;
 import com.watsonlogic.vitalarium.model.task.Task;
 
@@ -10,7 +12,7 @@ public interface DashboardCoordinatorActions {
 
     void onClickAddTask();
 
-    void onClickTaskMoreOptions(Task task);
+    void onClickTaskMoreOptions(Task task, View button);
 
     void onClickUpdateTask(Task task);
 

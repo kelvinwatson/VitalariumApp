@@ -6,13 +6,11 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.watsonlogic.vitalarium.R;
-import com.watsonlogic.vitalarium.model.project.Project;
 import com.watsonlogic.vitalarium.model.task.Task;
 import com.watsonlogic.vitalarium.presenter.dashboard.DashboardPresenter;
 import com.watsonlogic.vitalarium.view.adapter.TaskAdapter;
@@ -23,7 +21,7 @@ import java.util.List;
 /**
  * Displays a list of tasks and can serve as the backlog or a sprint
  */
-public class BacklogFragment extends DashboardBaseFragment implements DashboardViewActions {
+public class BacklogFragment extends DashboardBaseFragment {
     private DashboardPresenter presenter;
     private static final String TAG = "BacklogFragment";
     public static final String EXTRA_PROJECT_ID = "PROJECT_ID";
@@ -77,10 +75,5 @@ public class BacklogFragment extends DashboardBaseFragment implements DashboardV
         args.putParcelableArrayList(EXTRA_BACKLOG_TASKS, backlogTasks);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onGetProjectComplete(Project project) {
-
     }
 }
