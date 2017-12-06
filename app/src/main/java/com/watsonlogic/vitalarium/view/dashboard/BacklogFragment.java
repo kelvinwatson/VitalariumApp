@@ -55,7 +55,7 @@ public class BacklogFragment extends DashboardBaseFragment implements DashboardV
     public void onViewCreated(View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
         LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext());
-        backlogTaskAdapter = new TaskAdapter(tasks);
+        backlogTaskAdapter = new TaskAdapter(tasks, presenter);
         recycler = v.findViewById(R.id.backlog_task_recycler);
         recycler.setHasFixedSize(true);
         recycler.setLayoutManager(layoutManager);

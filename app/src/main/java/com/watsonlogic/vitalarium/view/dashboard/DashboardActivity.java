@@ -15,6 +15,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -80,6 +81,10 @@ public class DashboardActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
+            case R.id.action_refresh:
+                ((SwipeRefreshLayout)findViewById(R.id.swipe_refresh)).setRefreshing(true);
+                dashboardPresenter.getProject(project.getId());
+                return true;
             case R.id.action_settings:
                 return true;
             case R.id.action_sign_out:

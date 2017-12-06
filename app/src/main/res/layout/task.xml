@@ -7,6 +7,10 @@
         <variable
             name="task"
             type="com.watsonlogic.vitalarium.model.task.Task" />
+
+        <variable
+            name="dashboardPresenter"
+            type="com.watsonlogic.vitalarium.presenter.dashboard.DashboardPresenter" />
     </data>
 
     <RelativeLayout
@@ -39,12 +43,14 @@
         </LinearLayout>
 
         <ImageView
+            android:id="@+id/task_more_options"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:background="?selectableItemBackgroundBorderless"
+            android:onClick="@{(view)->dashboardPresenter.onClickTaskMoreOptions(task)}"
             android:tint="@android:color/darker_gray"
             app:srcCompat="@drawable/ic_more_vert_black_24dp" />
     </RelativeLayout>

@@ -1,8 +1,11 @@
 package com.watsonlogic.vitalarium.presenter.dashboard;
 
+import android.util.Log;
+
 import com.watsonlogic.vitalarium.model.dashboard.DashboardDataActions;
 import com.watsonlogic.vitalarium.model.dashboard.DashboardModel;
 import com.watsonlogic.vitalarium.model.project.Project;
+import com.watsonlogic.vitalarium.model.task.Task;
 import com.watsonlogic.vitalarium.view.dashboard.DashboardActivity;
 import com.watsonlogic.vitalarium.view.dashboard.DashboardViewActions;
 
@@ -12,6 +15,7 @@ import com.watsonlogic.vitalarium.view.dashboard.DashboardViewActions;
 public class DashboardPresenter implements DashboardCoordinatorActions {
     private final DashboardActivity view;
     private final DashboardDataActions model;
+    private static final String TAG = "DashboardPresenter";
 
     public DashboardPresenter(DashboardActivity view) {
         this.view = view;
@@ -31,17 +35,27 @@ public class DashboardPresenter implements DashboardCoordinatorActions {
 
 
     @Override
-    public void addTask() {
+    public void onClickAddTask() {
 
     }
 
     @Override
-    public void updateTask() {
+    public void onClickTaskMoreOptions(Task task) {
+        Log.d(TAG, task.toString());
+    }
+
+    @Override
+    public void onClickUpdateTask(Task task) {
+        Log.d(TAG, task.toString());
+    }
+
+    @Override
+    public void onClickDeleteTask(Task task) {
 
     }
 
     @Override
-    public void moveTask() {
+    public void onMoveTask() {
 
     }
 
