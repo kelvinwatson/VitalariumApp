@@ -25,8 +25,17 @@ public class Task implements Parcelable {
     private long updatedOn;
     private String updatedBy;
     private String createdByCreatedOnIndex;
+    private String status;
 
-    public Task(){
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Task() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
@@ -161,7 +170,7 @@ public class Task implements Parcelable {
         project = in.readString();
         dueDate = in.readLong();
         if (in.readByte() == 0x01) {
-            comments = new ArrayList<>();
+            comments = new ArrayList<Comment>();
             in.readList(comments, Comment.class.getClassLoader());
         } else {
             comments = null;
@@ -171,6 +180,7 @@ public class Task implements Parcelable {
         updatedOn = in.readLong();
         updatedBy = in.readString();
         createdByCreatedOnIndex = in.readString();
+        status = in.readString();
     }
 
     @Override
@@ -198,6 +208,7 @@ public class Task implements Parcelable {
         dest.writeLong(updatedOn);
         dest.writeString(updatedBy);
         dest.writeString(createdByCreatedOnIndex);
+        dest.writeString(status);
     }
 
     @SuppressWarnings("unused")

@@ -12,6 +12,8 @@ public interface DashboardCoordinatorActions {
 
     void onClickAddTask();
 
+    void onClickTask(Task task, View recyclerViewItem);
+
     void onClickTaskMoreOptions(Task task, View button);
 
     void onClickUpdateTask(Task task);

@@ -7,9 +7,11 @@ import android.view.MenuItem
 import android.widget.Toolbar
 
 import com.watsonlogic.vitalarium.R
+import com.watsonlogic.vitalarium.VitalariumConstants
 import com.watsonlogic.vitalarium.model.task.Task
 
 import com.watsonlogic.vitalarium.view.dashboard.DashboardActivity.EXTRA_TASK
+import com.watsonlogic.vitalarium.view.dashboard.DashboardActivity.EXTRA_TASK_ACTION
 
 
 class TaskDetailActivity : AppCompatActivity() {
@@ -19,7 +21,9 @@ class TaskDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_task_detail)
         supportActionBar?.setDisplayHomeAsUpEnabled(true) //show back button
         fragmentManager.beginTransaction().replace(R.id.task_detail_fragment_container,
-                TaskDetailFragment.newInstance(intent.getParcelableExtra<Parcelable>(EXTRA_TASK) as Task),
+                TaskDetailFragment.newInstance(
+                        intent.getParcelableExtra<Parcelable>(EXTRA_TASK) as Task,
+                        intent.getStringExtra(EXTRA_TASK_ACTION) as String),
                 TAG_FRAGMENT).addToBackStack(TAG_FRAGMENT).commit()
     }
 

@@ -29,6 +29,7 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.watsonlogic.vitalarium.R;
+import com.watsonlogic.vitalarium.VitalariumConstants.TaskAction;
 import com.watsonlogic.vitalarium.model.project.Project;
 import com.watsonlogic.vitalarium.model.user.User;
 import com.watsonlogic.vitalarium.presenter.dashboard.DashboardPresenter;
@@ -41,6 +42,7 @@ public class DashboardActivity extends AppCompatActivity
         implements DashboardViewActions, NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "DashboardActivity";
     public static final String EXTRA_TASK = "TASK";
+    public static final String EXTRA_TASK_ACTION = "TASK_ACTION";
     private static final int RC_UPDATE = 91;
     private static final int RC_DELETE = 92;
 
@@ -145,6 +147,7 @@ public class DashboardActivity extends AppCompatActivity
     public void onClickUpdateTask(com.watsonlogic.vitalarium.model.task.Task task) {
         Intent intent = new Intent(this, TaskDetailActivity.class);
         intent.putExtra(EXTRA_TASK, task);
+        intent.putExtra(EXTRA_TASK_ACTION, TaskAction.UPDATE.name());
         startActivityForResult(intent, RC_UPDATE);
     }
 

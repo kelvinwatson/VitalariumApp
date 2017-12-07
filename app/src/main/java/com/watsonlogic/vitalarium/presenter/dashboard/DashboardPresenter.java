@@ -45,6 +45,11 @@ public class DashboardPresenter implements DashboardCoordinatorActions {
     }
 
     @Override
+    public void onClickTask(final Task task, View recyclerViewItem){
+        DashboardPresenter.this.onClickUpdateTask(task);
+    }
+
+    @Override
     public void onClickTaskMoreOptions(final Task task, View moreButton) {
         Log.d(TAG, task.toString());
         PopupMenu popup = new PopupMenu(view, moreButton);
