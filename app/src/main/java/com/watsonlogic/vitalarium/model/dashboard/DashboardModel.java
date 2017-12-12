@@ -31,7 +31,6 @@ public class DashboardModel implements DashboardDataActions {
     public void addObserver(DashboardCoordinatorActions presenter) {
         this.presenter = presenter;
     }
-    private DatabaseReference dbRef;
 
     public DashboardModel(DashboardActivity view){
         this.view = view;
@@ -39,12 +38,6 @@ public class DashboardModel implements DashboardDataActions {
 
     @Override
     public void getProject(String projectId) {
-        //call firebase
-        if (dbRef == null){
-            dbRef = FirebaseDatabase.getInstance().getReference();
-        }
-        // TODO: Call Volley and wait for result, then dispatch presenter.onGetProjectComplete(project);
-
         Context context = view.getApplicationContext();
         String firebaseFunctionUrl = VitalariumConstants.BASE_FIREBASE_FUNCTION_URL + "/getProjectFromDb?projectId=" + projectId;
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, firebaseFunctionUrl,

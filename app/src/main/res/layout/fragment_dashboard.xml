@@ -1,17 +1,13 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:foregroundGravity="center"
-    android:background="@color/colorSlate"
     tools:context="com.watsonlogic.vitalarium.view.dashboard.DashboardBaseFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:gravity="center"
-        android:id="@+id/dummy_text"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/task_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textColor="@android:color/black"
-        android:text="@string/hello_blank_fragment" />
-</FrameLayout>
+        android:scrollbars="vertical" />
+</android.support.v4.widget.SwipeRefreshLayout>

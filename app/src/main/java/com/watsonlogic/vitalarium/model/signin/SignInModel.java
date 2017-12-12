@@ -163,7 +163,6 @@ public class SignInModel implements SignInDataActions {
     private void initializeFirstTimeUserDatabaseObjects(final FirebaseUser firebaseUser) {
         //Google Volley
         Context context = view.getApplicationContext();
-        RequestQueue queue = Volley.newRequestQueue(context);
         String firebaseFunctionUrl = VitalariumConstants.BASE_FIREBASE_FUNCTION_URL + "/initializeUserObjectsInDb";
 
         JSONObject jsonObjLeft = new JSONObject();

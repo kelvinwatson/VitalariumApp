@@ -1,65 +1,70 @@
 package com.watsonlogic.vitalarium.view.dashboard;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.watsonlogic.vitalarium.R;
-import com.watsonlogic.vitalarium.model.project.Project;
 import com.watsonlogic.vitalarium.model.task.Task;
+import com.watsonlogic.vitalarium.presenter.dashboard.DashboardPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.watsonlogic.vitalarium.view.dashboard.DashboardActivity.DashboardPagerAdapter.EXTRA_PROJECT;
-
 /**
 
  */
-public class DashboardBaseFragment extends Fragment {
+public abstract class DashboardBaseFragment extends Fragment {
+    private static final String TAG = "DashboardBaseFragment";
     private static final String EXTR_CTA = "callToAction";
     private static final String EXTRA_SPRINT_DATE_RANGE = "sprintDateRange";
-    private List<Task> tasks = new ArrayList<>();
-
-    private String cta;
-    private String sprintDateRange;
-
+    protected DashboardPresenter presenter;
+    protected RecyclerView recycler;
+    protected List<Task> tasks = new ArrayList<>();
+    protected String projectId;
 
     public DashboardBaseFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-//     * @param backlogTasks Parameter 1.
-     * @return A new instance of fragment DashboardBaseFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-//    public static DashboardBaseFragment newInstance(List<Task> backlogTasks) {
-//        DashboardBaseFragment fragment = new DashboardBaseFragment();
-//        Bundle args = new Bundle();
-//        args.putParcelable(EXTRA_PROJECT, project);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
+    private int getFragmentLayout() {
+        return R.layout.fragment_dashboard;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        presenter = new DashboardPresenter((DashboardActivity)getActivity());
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            cta = getArguments().getString(EXTR_CTA);
-            sprintDateRange = getArguments().getString(EXTRA_SPRINT_DATE_RANGE);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_dashboard, container, false);
+        return inflater.inflate(getFragmentLayout(), container, false);
+    }
+
+    @Override
+    public void onViewCreated(View v, @Nullable Bundle savedInstanceState) {
+        SwipeRefreshLayout swipeRefresh = v.findViewById(R.id.swipe_refresh);
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.getProject(projectId);
+            }
+        });
+        LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext());
+        recycler = v.findViewById(R.id.task_recycler);
+        recycler.setHasFixedSize(true);
+        recycler.setLayoutManager(layoutManager);
+        recycler.addItemDecoration(new DividerItemDecoration(v.getContext(), layoutManager.getOrientation()));
+
+        super.onViewCreated(v, savedInstanceState);
     }
 }

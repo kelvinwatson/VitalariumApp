@@ -13,6 +13,7 @@ import com.watsonlogic.vitalarium.model.project.Project;
 import com.watsonlogic.vitalarium.model.task.Task;
 import com.watsonlogic.vitalarium.view.dashboard.DashboardActivity;
 import com.watsonlogic.vitalarium.view.dashboard.DashboardViewActions;
+import com.watsonlogic.vitalarium.view.taskdetail.TaskDetailFragment;
 
 /**
  * {@link DashboardCoordinatorActions implementation}
@@ -41,11 +42,12 @@ public class DashboardPresenter implements DashboardCoordinatorActions {
 
     @Override
     public void onClickAddTask() {
-
+        Log.d(TAG, "add task");
+        view.onClickAddTask();
     }
 
     @Override
-    public void onClickTask(final Task task, View recyclerViewItem){
+    public void onClickTask(final Task task, View recyclerViewItem) {
         DashboardPresenter.this.onClickUpdateTask(task);
     }
 
@@ -56,7 +58,7 @@ public class DashboardPresenter implements DashboardCoordinatorActions {
         popup.getMenuInflater().inflate(R.menu.task, popup.getMenu());
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
-                switch(item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.action_update:
                         DashboardPresenter.this.onClickUpdateTask(task);
                         break;
@@ -77,7 +79,6 @@ public class DashboardPresenter implements DashboardCoordinatorActions {
 
     @Override
     public void onClickUpdateTask(Task task) {
-        Log.d(TAG, task.toString());
         view.onClickUpdateTask(task);
         //view should open up the task
         //view.onClickUpdateTask
@@ -97,7 +98,7 @@ public class DashboardPresenter implements DashboardCoordinatorActions {
     }
 
     @Override
-    public void onRefreshProject(){
+    public void onRefreshProject() {
 
     }
 }

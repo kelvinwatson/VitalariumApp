@@ -17,44 +17,58 @@ public class Task implements Parcelable {
     private String description;
     private String size;
     private String sprint;
+    private String status;
     private String project;
-    private long dueDate;
+    private Long dueDate;
     private List<Comment> comments;
-    private long createdOn;
+    private Long createdOn;
     private String createdBy;
-    private long updatedOn;
+    private Long updatedOn;
     private String updatedBy;
     private String createdByCreatedOnIndex;
-    private String status;
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    private Boolean success;
 
     public Task() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
     public Task(String id, String title, String description, String size, String sprint,
-                String project, long dueDate, List<Comment> comments, long createdOn,
-                String createdBy, long updatedOn, String updatedBy) {
+                String status, String project, Long dueDate, List<Comment> comments, Long createdOn,
+                String createdBy, Long updatedOn, String updatedBy) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.size = size;
         this.sprint = sprint;
+        this.status = status;
         this.project = project;
         this.dueDate = dueDate;
         this.comments = comments;
         this.createdOn = createdOn;
         this.createdBy = createdBy;
-        this.updatedOn = createdOn; //initialize with creation date
-        this.updatedBy = createdBy; //initialize with creator
+        this.updatedOn = updatedOn == null ? createdOn : updatedOn; //initialize with creation date
+        this.updatedBy = updatedBy == null ? createdBy : updatedBy; //initialize with creator
         this.createdByCreatedOnIndex = this.createdBy + '_' + this.createdOn;
+    }
+
+    @Override
+    public String toString() {
+        return "Task {" +
+                "id: " + this.id + ", " +
+                "title: " + this.title + ", " +
+                "description: " + this.description + ", " +
+                "size: " + this.size + ", " +
+                "sprint: " + this.sprint + ", " +
+                "status: " + this.status + ", " +
+                "project: " + this.project + ", " +
+                "dueDate: " + this.dueDate + ", " +
+                "comments: " + this.comments + ", " +
+                "createdOn: " + this.createdOn + ", " +
+                "createdBy: " + this.createdBy + ", " +
+                "updatedOn: " + this.updatedOn + ", " +
+                "updatedBy: " + this.updatedBy + ", " +
+                "createdByCreatedOnIndex: " + this.createdByCreatedOnIndex + ", " +
+                "}";
     }
 
     public String getId() {
@@ -97,6 +111,14 @@ public class Task implements Parcelable {
         this.sprint = sprint;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getProject() {
         return project;
     }
@@ -105,11 +127,11 @@ public class Task implements Parcelable {
         this.project = project;
     }
 
-    public long getDueDate() {
+    public Long getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(long dueDate) {
+    public void setDueDate(Long dueDate) {
         this.dueDate = dueDate;
     }
 
@@ -121,11 +143,11 @@ public class Task implements Parcelable {
         this.comments = comments;
     }
 
-    public long getCreatedOn() {
+    public Long getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(long createdOn) {
+    public void setCreatedOn(Long createdOn) {
         this.createdOn = createdOn;
     }
 
@@ -137,11 +159,11 @@ public class Task implements Parcelable {
         this.createdBy = createdBy;
     }
 
-    public long getUpdatedOn() {
+    public Long getUpdatedOn() {
         return updatedOn;
     }
 
-    public void setUpdatedOn(long updatedOn) {
+    public void setUpdatedOn(Long updatedOn) {
         this.updatedOn = updatedOn;
     }
 
@@ -161,26 +183,36 @@ public class Task implements Parcelable {
         this.createdByCreatedOnIndex = createdByCreatedOnIndex;
     }
 
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
     protected Task(Parcel in) {
         id = in.readString();
         title = in.readString();
         description = in.readString();
         size = in.readString();
         sprint = in.readString();
+        status = in.readString();
         project = in.readString();
-        dueDate = in.readLong();
+        dueDate = in.readByte() == 0x00 ? null : in.readLong();
         if (in.readByte() == 0x01) {
             comments = new ArrayList<Comment>();
             in.readList(comments, Comment.class.getClassLoader());
         } else {
             comments = null;
         }
-        createdOn = in.readLong();
+        createdOn = in.readByte() == 0x00 ? null : in.readLong();
         createdBy = in.readString();
-        updatedOn = in.readLong();
+        updatedOn = in.readByte() == 0x00 ? null : in.readLong();
         updatedBy = in.readString();
         createdByCreatedOnIndex = in.readString();
-        status = in.readString();
+        byte successVal = in.readByte();
+        success = successVal == 0x02 ? null : successVal != 0x00;
     }
 
     @Override
@@ -195,20 +227,40 @@ public class Task implements Parcelable {
         dest.writeString(description);
         dest.writeString(size);
         dest.writeString(sprint);
+        dest.writeString(status);
         dest.writeString(project);
-        dest.writeLong(dueDate);
+        if (dueDate == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeLong(dueDate);
+        }
         if (comments == null) {
             dest.writeByte((byte) (0x00));
         } else {
             dest.writeByte((byte) (0x01));
             dest.writeList(comments);
         }
-        dest.writeLong(createdOn);
+        if (createdOn == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeLong(createdOn);
+        }
         dest.writeString(createdBy);
-        dest.writeLong(updatedOn);
+        if (updatedOn == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeLong(updatedOn);
+        }
         dest.writeString(updatedBy);
         dest.writeString(createdByCreatedOnIndex);
-        dest.writeString(status);
+        if (success == null) {
+            dest.writeByte((byte) (0x02));
+        } else {
+            dest.writeByte((byte) (success ? 0x01 : 0x00));
+        }
     }
 
     @SuppressWarnings("unused")
@@ -230,12 +282,13 @@ public class Task implements Parcelable {
         private String description;
         private String size;
         private String sprint;
+        private String status;
         private String project;
-        private long dueDate;
+        private Long dueDate;
         private List<Comment> comments;
-        private long createdOn;
+        private Long createdOn;
         private String createdBy;
-        private long updatedOn;
+        private Long updatedOn;
         private String updatedBy;
 
         public TaskBuilder setId(String id) {
@@ -263,12 +316,17 @@ public class Task implements Parcelable {
             return this;
         }
 
+        public TaskBuilder setStatus(String status) {
+            this.status = status;
+            return this;
+        }
+
         public TaskBuilder setProject(String project) {
             this.project = project;
             return this;
         }
 
-        public TaskBuilder setDueDate(long dueDate) {
+        public TaskBuilder setDueDate(Long dueDate) {
             this.dueDate = dueDate;
             return this;
         }
@@ -278,7 +336,7 @@ public class Task implements Parcelable {
             return this;
         }
 
-        public TaskBuilder setCreatedOn(long createdOn) {
+        public TaskBuilder setCreatedOn(Long createdOn) {
             this.createdOn = createdOn;
             return this;
         }
@@ -288,7 +346,7 @@ public class Task implements Parcelable {
             return this;
         }
 
-        public TaskBuilder setUpdatedOn(long updatedOn) {
+        public TaskBuilder setUpdatedOn(Long updatedOn) {
             this.updatedOn = updatedOn;
             return this;
         }
@@ -296,6 +354,11 @@ public class Task implements Parcelable {
         public TaskBuilder setUpdatedBy(String updatedBy) {
             this.updatedBy = updatedBy;
             return this;
+        }
+
+        public Task build() {
+            return new Task(id, title, description, size, sprint, status, project, dueDate,
+                    comments, createdOn, createdBy, updatedOn, updatedBy);
         }
     }
 }
