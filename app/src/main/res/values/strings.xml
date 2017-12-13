@@ -18,6 +18,8 @@
     <string name="task_sprint_spinner_label">Sprint</string>
     <string name="task_status_spinner_label">Status</string>
 
+    <string name="no_tasks_yet">No tasks yet</string>
+
     <string name="error_title_field_empty">Please enter a title</string>
 
     <string name="logo">_VITALARIUM</string>

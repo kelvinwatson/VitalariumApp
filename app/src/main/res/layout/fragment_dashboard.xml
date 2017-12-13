@@ -5,9 +5,29 @@
     android:layout_height="match_parent"
     tools:context="com.watsonlogic.vitalarium.view.dashboard.DashboardBaseFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/task_recycler"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/task_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:visibility="visible" />
+
+        <!--<ProgressBar-->
+            <!--android:id="@+id/task_progress"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true" />-->
+
+        <include
+            android:id="@+id/no_tasks_layout"
+            layout="@layout/no_tasks_yet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignWithParentIfMissing="true"
+            android:visibility="gone" />
+    </RelativeLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

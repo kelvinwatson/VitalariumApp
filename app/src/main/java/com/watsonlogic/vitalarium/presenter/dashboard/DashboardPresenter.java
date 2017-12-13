@@ -1,5 +1,6 @@
 package com.watsonlogic.vitalarium.presenter.dashboard;
 
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -80,16 +81,12 @@ public class DashboardPresenter implements DashboardCoordinatorActions {
     @Override
     public void onClickUpdateTask(Task task) {
         view.onClickUpdateTask(task);
-        //view should open up the task
-        //view.onClickUpdateTask
     }
 
     @Override
     public void onClickDeleteTask(Task task) {
         Log.d(TAG, task.toString());
         view.onClickDeleteUpdateTask(task);
-        //view should show warning
-        //view.onClickDeleteTask
     }
 
     @Override
